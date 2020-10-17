@@ -2,6 +2,7 @@
 #include "display.h"
 #include "comm.h"
 #include "network.h"
+#include "config.h"
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -25,11 +26,12 @@ void setup()
   if (node == NodeType::SERVER)
   {
     network::initializeWireless();
-    network::initializeFirebase();
   }
 }
 
 void loop()
 {
+  auto d = network::data{10, 10, 10, 10, 10, 10};
+  network::storeFirebaseData(d);
   
 }

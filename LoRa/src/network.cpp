@@ -1,17 +1,16 @@
 #include "network.h"
 #include "display.h"
+#include <ArduinoJson.h>
 
 using namespace network;
 
 const char *network::ssid = "Test";
 const char *network::password = "pranavsiphone";
 
-const String network::firebaseDBURL = "treewatch-f6df4.firebaseio.com";
-const String network::firebaseDBSecret = "4vtIHebd036PIAN62knvv5O8j1Lkf2oJemf0A4xX";
+const char *network::firebaseUploadFunctionURL = "https://us-central1-treewatch-f6df4.cloudfunctions.net/sendPacket";
 
 const String network::firebaseRoot = "/root";
 
-FirebaseData network::firebaseData;
 /**
  * scans all local networks and prints on screen
  * make sure to initialize display before using this
@@ -51,23 +50,41 @@ void network::initializeWireless()
     display::write(2, WiFi.localIP().toString());
 }
 
-void network::initializeFirebase()
-{
-    Firebase.begin(firebaseDBURL, firebaseDBSecret);
-    Firebase.reconnectWiFi(true);
-}
-
-void network::storeFirebaseData()
+void network::storeFirebaseData(network::data data)
 {
     display::clear();
-    bool response = Firebase.setBool(firebaseData, firebaseRoot + "/reached", true);
-    if (response)
+    if (WiFi.status() == WL_CONNECTED)
     {
-        display::write("yo it worked tho.");
+        HTTPClient http;
+        http.begin(network::firebaseUploadFunctionURL);
+        // Specify content-type header
+        http.addHeader("Content-Type", "application/json");
+
+        // parse data into json document
+        StaticJsonDocument<200> doc;
+        doc["temp"] = data.temp;
+        doc["humidity"] = data.humidity;
+        doc["co2"] = data.co2_ppi;
+        doc["sender_id"] = data.sender_id;
+        doc["collector_id"] = data.collector_id;
+        doc["status"] = data.status;
+
+        String json;
+        serializeJson(doc, json);
+        int response = http.POST(json);
+        if (response > 0)
+        {
+            display::clear();
+            display::write(String(response));
+            display::write(1, http.getString().substring(0, 15));
+        }
+        else
+        {
+            display::clear();
+            display::write("400 error");
+        }
+        http.end();
+
+        delay(10000);
     }
-    else
-    {
-        display::write("yo it didnt work tho.");
-    }
-    delay(100000);
 }

@@ -2,25 +2,35 @@
 #define NETWORK_H_
 
 #include <WiFi.h>
-#include <FirebaseESP32.h>
+#include <HTTPClient.h>
+
 
 namespace network
 {
+    struct data
+    {
+        float temp;
+        float humidity;
+        float co2_ppi;
+
+        int collector_id;
+        int sender_id;
+
+        int status;
+    };
+
     extern const char *ssid;
     extern const char *password;
 
-    extern const String firebaseDBURL;
-    extern const String firebaseDBSecret;
+    extern const char *firebaseUploadFunctionURL;
 
     extern const String firebaseRoot;
 
-    extern FirebaseData firebaseData;
 
     extern void scanNetworks();
     extern void initializeWireless();
-    extern void initializeFirebase();
-    extern void storeFirebaseData();
+    extern void storeFirebaseData(network::data data);
 
-} // namespace wireless
+} // namespace network
 
 #endif
