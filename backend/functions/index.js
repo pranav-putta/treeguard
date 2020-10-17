@@ -14,17 +14,49 @@ exports.sendPacket = functions.https.onRequest((req, res) => {
   let data = req.body;
   let docID = "node-" + data.sender_id;
   data.timestamp = Date.now();
+
+  const update = () =>
+    admin
+      .firestore()
+      .collection("node-data")
+      .doc(docID)
+      .update({ log: admin.firestore.FieldValue.arrayUnion(data) })
+      .then((response) => {
+        res.status(200).send({ success: true });
+        return;
+      })
+      .catch((error) => {
+        res.status(400).send({ error: error, success: false });
+        return;
+      });
+
+  const newDoc = () =>
+    admin
+      .firestore()
+      .collection("node-data")
+      .doc(docID)
+      .set({ log: [data] })
+      .then((response) => {
+        res.status(200).send({ success: true });
+        return;
+      })
+      .catch((error) => {
+        res.status(400).send({ error: error, success: false });
+        return;
+      });
   admin
     .firestore()
     .collection("node-data")
     .doc(docID)
-    .update({ log: admin.firestore.FieldValue.arrayUnion(data) })
-    .then((response) => {
-      res.status(200).send({ success: true });
-      return;
+    .get()
+    .then((resp) => {
+      if (resp.exists) {
+        return update();
+      } else {
+        return newDoc();
+      }
     })
-    .catch((error) => {
-      res.status(400).send({ data: data, success: false });
-      return;
+    .catch((err) => {
+      return res.status(400).send({ error: err, success: false });
     });
 });

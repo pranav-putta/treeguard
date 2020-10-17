@@ -31,7 +31,6 @@ void setup()
 
 void loop()
 {
-  auto d = network::data{10, 10, 10, 10, 10, 10};
+  auto d = network::data{10, 10, 10, 10, NODE_ID, 10};
   network::storeFirebaseData(d);
-  
 }
