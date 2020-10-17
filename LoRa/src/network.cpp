@@ -6,20 +6,16 @@ using namespace network;
 const char *network::ssid = "Test";
 const char *network::password = "pranavsiphone";
 
-WiFiServer network::server(80);
+const String network::firebaseDBURL = "treewatch-f6df4.firebaseio.com";
+const String network::firebaseDBSecret = "4vtIHebd036PIAN62knvv5O8j1Lkf2oJemf0A4xX";
 
-String network::output25State = "off";
-String network::output26State = "off";
-String network::output27State = "off";
+const String network::firebaseRoot = "/root";
 
-const int network::output25 = 0;
-const int network::output26 = 0;
-const int network::output27 = 0;
-
-unsigned long network::currentTime = millis();
-unsigned long network::previousTime = 0;
-const long network::timeoutTime = 2000;
-
+FirebaseData network::firebaseData;
+/**
+ * scans all local networks and prints on screen
+ * make sure to initialize display before using this
+ */
 void network::scanNetworks()
 {
     int nCount = WiFi.scanNetworks();
@@ -32,7 +28,6 @@ void network::scanNetworks()
     {
         for (int i = 0; i < nCount; i++)
         {
-
             display::write(i, WiFi.SSID(i));
         }
     }
@@ -54,4 +49,25 @@ void network::initializeWireless()
         ct++;
     }
     display::write(2, WiFi.localIP().toString());
+}
+
+void network::initializeFirebase()
+{
+    Firebase.begin(firebaseDBURL, firebaseDBSecret);
+    Firebase.reconnectWiFi(true);
+}
+
+void network::storeFirebaseData()
+{
+    display::clear();
+    bool response = Firebase.setBool(firebaseData, firebaseRoot + "/reached", true);
+    if (response)
+    {
+        display::write("yo it worked tho.");
+    }
+    else
+    {
+        display::write("yo it didnt work tho.");
+    }
+    delay(100000);
 }
