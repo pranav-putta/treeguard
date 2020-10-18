@@ -1,0 +1,27 @@
+{
+  "files": {
+    "main.css": "/treeguard/static/css/main.3b1a70f7.chunk.css",
+    "main.js": "/treeguard/static/js/main.56022b7b.chunk.js",
+    "main.js.map": "/treeguard/static/js/main.56022b7b.chunk.js.map",
+    "runtime-main.js": "/treeguard/static/js/runtime-main.979a9a95.js",
+    "runtime-main.js.map": "/treeguard/static/js/runtime-main.979a9a95.js.map",
+    "static/css/2.0c794da0.chunk.css": "/treeguard/static/css/2.0c794da0.chunk.css",
+    "static/js/2.79c4cc25.chunk.js": "/treeguard/static/js/2.79c4cc25.chunk.js",
+    "static/js/2.79c4cc25.chunk.js.map": "/treeguard/static/js/2.79c4cc25.chunk.js.map",
+    "index.html": "/treeguard/index.html",
+    "precache-manifest.b7e36559f9ff645268bcae5c432d4906.js": "/treeguard/precache-manifest.b7e36559f9ff645268bcae5c432d4906.js",
+    "service-worker.js": "/treeguard/service-worker.js",
+    "static/css/2.0c794da0.chunk.css.map": "/treeguard/static/css/2.0c794da0.chunk.css.map",
+    "static/css/main.3b1a70f7.chunk.css.map": "/treeguard/static/css/main.3b1a70f7.chunk.css.map",
+    "static/js/2.79c4cc25.chunk.js.LICENSE.txt": "/treeguard/static/js/2.79c4cc25.chunk.js.LICENSE.txt",
+    "static/media/logo.svg": "/treeguard/static/media/logo.d564bd83.svg",
+    "static/media/index.css": "/treeguard/static/media/roboto-latin-900italic.ebf6d164.woff2"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.979a9a95.js",
+    "static/css/2.0c794da0.chunk.css",
+    "static/js/2.79c4cc25.chunk.js",
+    "static/css/main.3b1a70f7.chunk.css",
+    "static/js/main.56022b7b.chunk.js"
+  ]
+}
