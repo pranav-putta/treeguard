@@ -15,12 +15,12 @@ exports.sendPacket = functions.https.onRequest((req, res) => {
   let docID = "node-" + data.sender_id;
   data.timestamp = Date.now();
 
-  const update = () =>
+  const update = (newData) =>
     admin
       .firestore()
       .collection("node-data")
       .doc(docID)
-      .update({ log: admin.firestore.FieldValue.arrayUnion(data) })
+      .update({ log: admin.firestore.FieldValue.arrayUnion(newData) })
       .then((response) => {
         res.status(200).send({ success: true });
         return;
@@ -30,12 +30,12 @@ exports.sendPacket = functions.https.onRequest((req, res) => {
         return;
       });
 
-  const newDoc = () =>
+  const newDoc = (newData) =>
     admin
       .firestore()
       .collection("node-data")
       .doc(docID)
-      .set({ log: [data] })
+      .set({ log: [newData] })
       .then((response) => {
         res.status(200).send({ success: true });
         return;
@@ -50,10 +50,16 @@ exports.sendPacket = functions.https.onRequest((req, res) => {
     .doc(docID)
     .get()
     .then((resp) => {
+      // parse data object
+      let readings = data.readings;
+      let splitter = readings.split(" ")
+      data["temp"] = parseFloat(splitter[0])
+      data["humidity"] = parseFloat(splitter[1])
+      data["co2"] = parseFloat(splitter[2])
       if (resp.exists) {
-        return update();
+        return update(data);
       } else {
-        return newDoc();
+        return newDoc(data);
       }
     })
     .catch((err) => {
