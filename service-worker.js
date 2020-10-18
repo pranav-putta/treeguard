@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/treeguard/precache-manifest.b7e36559f9ff645268bcae5c432d4906.js"
+  "/treeguard/precache-manifest.4ea04af7b60b9fffdb6de28947629353.js"
 );
 
 self.addEventListener('message', (event) => {
