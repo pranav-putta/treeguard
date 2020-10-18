@@ -206,7 +206,6 @@ class Home extends React.Component<Props, State> {
     });
 
     // register service worker
-    
   }
 
   notifCard = (node: Node) => {
@@ -243,11 +242,12 @@ class Home extends React.Component<Props, State> {
               style={{
                 fontWeight: "normal",
                 position: "absolute",
+                color: 'red',
                 right: 40,
               }}
             >
               {" "}
-              Receiving
+              Not Connected
             </span>
           </h3>
           <h3 style={{ marginTop: 5 }}>
@@ -447,10 +447,11 @@ class Home extends React.Component<Props, State> {
                 fontWeight: "normal",
                 position: "absolute",
                 right: 40,
+                color: 'red'
               }}
             >
               {" "}
-              Receiving
+              Not Connected
             </span>
           </h3>
           <h3 style={{ marginTop: 5 }}>
@@ -524,7 +525,8 @@ class Home extends React.Component<Props, State> {
               <p style={{ color: "white", fontWeight: "bold" }}>
                 {this.state.nodes[this.state.selectedNodeIndex].log[
                   this.state.nodes[this.state.selectedNodeIndex].log.length - 1
-                ].temp.toFixed(2)}°C
+                ].temp.toFixed(2)}
+                °C
               </p>
             </div>
           </div>
@@ -769,32 +771,7 @@ class Home extends React.Component<Props, State> {
         >
           <h1 style={{ fontWeight: "bold", color: "white" }}>Propogate</h1>
         </div>
-        <div
-          style={{
-            padding: 20,
-            borderRadius: 10,
-            position: "absolute",
-            bottom: 30,
-            left: 400,
-            backgroundColor: "#0091ea",
-            opacity: 0,
-          }}
-          onClick={() => {
-            firebase
-              .firestore()
-              .collection("node-data")
-              .doc("node-1")
-              .get()
-              .then((res) => {
-                let node: Node | undefined = res.data() as Node;
-                if (node) {
-                  this.setState({ notification: node });
-                }
-              });
-          }}
-        >
-          <h1 style={{ fontWeight: "bold", color: "white" }}>test</h1>
-        </div>
+
         {this.state.selectedNodeIndex >= 0 ? this.card() : undefined}
         {this.state.notification
           ? this.notifCard(this.state.notification)
